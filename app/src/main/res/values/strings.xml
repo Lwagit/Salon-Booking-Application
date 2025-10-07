@@ -1,0 +1,32 @@
+<resources>
+    <!-- Existing strings -->
+
+    <!-- Add these strings to your existing strings.xml -->
+    <string name="find_us_easily">Find us easily • Get directions instantly</string>
+    <string name="payment_title">Secure Payment</string>
+    <string name="payment_subtitle">Complete your booking with confidence</string>
+    <string name="card_number">Card Number</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="cvv">CVV</string>
+
+    <!-- Add these strings to your existing strings.xml -->
+    <string name="app_logo_icon">Salon booking app logo</string>
+    <string name="date_icon">Calendar icon</string>
+    <string name="time_icon">Clock icon</string>
+
+
+    <!-- Booking Fragment Strings -->
+    <string name="book_appointment_title">Book Your Appointment</string>
+    <string name="book_appointment_subtitle">Schedule your perfect beauty experience ✨</string>
+    <string name="select_date">Select Date</string>
+    <string name="date_hint">Tap to choose date</string>
+    <string name="select_time">Select Time</string>
+    <string name="time_hint">Tap to choose time</string>
+    <!-- Map Fragment Strings -->
+    <string name="salon_location">📍 Salon Location</string>
+    <string name="tap_to_open_maps">Tap to Open Google Maps</string>
+    <string name="location_details">📍 123 Beauty Street\nJohannesburg, 2000\n\n📞 011 123 4567\n🕒 9:00 AM - 7:00 PM</string>
+    <string name="get_directions">Get Directions</string>
+    <string name="tips">💡 Tips</string>
+    <string name="tips_details">• Free parking available\n• Wheelchair accessible\n• Near Gandhi Square\n• Tap map for navigation</string>
+</resources>

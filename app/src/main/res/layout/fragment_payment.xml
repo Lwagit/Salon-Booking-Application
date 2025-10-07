@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Payment Gateway"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="32dp" />
+
+    <TextView
+        android:id="@+id/tvServiceInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Service: "
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/tvTotalAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Amount: R 0"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#4CAF50"
+        android:layout_marginBottom="32dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter Card Details"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Card Number"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Expiry Date"
+            android:layout_marginEnd="8dp" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="CVV"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnConfirmPayment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirm Payment"
+        android:textSize="18sp"
+        android:backgroundTint="#4CAF50"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:textSize="18sp"
+        android:backgroundTint="#F44336" />
+
+</LinearLayout>

@@ -1,0 +1,44 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Beautiful Text Input Style -->
+    <style name="BeautifulTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxStrokeColor">@color/beautiful_pink</item>
+        <item name="hintTextColor">@color/beautiful_pink</item>
+    </style>
+
+    <!-- Beautiful Button Style -->
+    <style name="BeautifulButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/beautiful_pink</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">28dp</item>
+    </style>
+
+    <!-- Reviews Fragment Strings -->
+    <string name="reviews_ratings_title">⭐ Reviews &amp; Ratings</string>
+    <string name="reviews_subtitle">What our customers say about us</string>
+    <string name="rating_value">4.8</string>
+    <string name="rating_stars">4.8/5 Stars</string>
+    <string name="reviews_count">Based on 128 reviews</string>
+    <string name="add_review_button">✍️ Add Your Review</string>
+    <string name="customer_reviews_title">💬 Customer Reviews</string>
+
+    <!-- Reviewers -->
+    <string name="reviewer1_name">Thembi M.</string>
+    <string name="reviewer2_name">Nkosi D.</string>
+    <string name="reviewer3_name">Lerato K.</string>
+
+    <!-- Review Texts -->
+    <string name="review1_text">Amazing service! The stylist was very professional and understood exactly what I wanted. Will definitely come back!</string>
+    <string name="review2_text">Good experience overall. The staff was friendly and the salon was clean. Would recommend for a quick haircut.</string>
+    <string name="review3_text">Best salon in Johannesburg! The bridal makeup was absolutely stunning. My wedding day was perfect thanks to their amazing team.</string>
+
+    <!-- Review Dates -->
+    <string name="review1_date">2 days ago</string>
+    <string name="review2_date">1 week ago</string>
+    <string name="review3_date">3 weeks ago</string>
+
+</resources>
