@@ -29,6 +29,7 @@ class BookingConfirmationFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         selectedService = arguments?.getSerializable("service") as? SalonService
         setupUI(view)
     }

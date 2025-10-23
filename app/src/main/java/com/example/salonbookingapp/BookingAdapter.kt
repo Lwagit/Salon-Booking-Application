@@ -1,4 +1,4 @@
-package com.example.salonbookingapp.data
+package com.example.salonbookingapp.fragments
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +7,12 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.salonbookingapp.R
+import com.example.salonbookingapp.data.Booking
 
 class BookingAdapter(
     private val bookings: List<Booking>,
-    private val listener: (Booking, String) -> Unit
+    private val onEdit: (Booking) -> Unit,
+    private val onDelete: (Booking) -> Unit
 ) : RecyclerView.Adapter<BookingAdapter.BookingViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookingViewHolder {
@@ -18,27 +20,30 @@ class BookingAdapter(
         return BookingViewHolder(view)
     }
 
-    override fun getItemCount(): Int = bookings.size
-
     override fun onBindViewHolder(holder: BookingViewHolder, position: Int) {
-        val booking = bookings[position]
-        holder.tvService.text = booking.serviceName
-        holder.tvServicePrice.text = "R${booking.servicePrice}"
-        holder.tvDate.text = booking.date
-        holder.tvTime.text = booking.time
-        holder.tvPayment.text = booking.paymentMethod
-
-        holder.btnEdit.setOnClickListener { listener(booking, "edit") }
-        holder.btnDelete.setOnClickListener { listener(booking, "delete") }
+        holder.bind(bookings[position])
     }
 
-    class BookingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvService: TextView = itemView.findViewById(R.id.tvServiceName)
-        val tvServicePrice: TextView = itemView.findViewById(R.id.tvServicePrice)
-        val tvDate: TextView = itemView.findViewById(R.id.tvDate)
-        val tvTime: TextView = itemView.findViewById(R.id.tvTime)
-        val tvPayment: TextView = itemView.findViewById(R.id.tvPaymentMethod)
-        val btnEdit: ImageButton = itemView.findViewById(R.id.btnEdit)
-        val btnDelete: ImageButton = itemView.findViewById(R.id.btnDelete)
+    override fun getItemCount(): Int = bookings.size
+
+    inner class BookingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val tvServiceName: TextView = itemView.findViewById(R.id.tvServiceName)
+        private val tvServicePrice: TextView = itemView.findViewById(R.id.tvServicePrice)
+        private val tvDate: TextView = itemView.findViewById(R.id.tvDate)
+        private val tvTime: TextView = itemView.findViewById(R.id.tvTime)
+        private val tvPaymentMethod: TextView = itemView.findViewById(R.id.tvPaymentMethod)
+        private val btnEdit: ImageButton = itemView.findViewById(R.id.btnEdit)
+        private val btnDelete: ImageButton = itemView.findViewById(R.id.btnDelete)
+
+        fun bind(booking: Booking) {
+            tvServiceName.text = booking.serviceName
+            tvServicePrice.text = "R${booking.servicePrice.toInt()}"
+            tvDate.text = booking.date
+            tvTime.text = booking.time
+            tvPaymentMethod.text = booking.paymentMethod
+
+            btnEdit.setOnClickListener { onEdit(booking) }
+            btnDelete.setOnClickListener { onDelete(booking) }
+        }
     }
 }
