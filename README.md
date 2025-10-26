@@ -12,7 +12,7 @@ It allows customers to **book, view and delete** appointments conveniently while
 - Edit or delete existing bookings.
 - Automatic synchronization with **Firebase Firestore**.
 - View Map / Telephone Number API
-- Leave Reviews
+- Leave Reviews Section
 
 ### 🧩 Core Functionalities
 - Firebase Authentication for user management.
