@@ -2,6 +2,7 @@ package com.example.salonbookingapp.data
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 
 object FirestoreBookingHelper {
 
@@ -9,80 +10,85 @@ object FirestoreBookingHelper {
     private val auth = FirebaseAuth.getInstance()
     private const val COLLECTION = "bookings"
 
+    val bookingsList = mutableListOf<Booking>()
+    private var listener: ListenerRegistration? = null
+
+    fun startListening(onUpdate: (List<Booking>) -> Unit) {
+        val user = auth.currentUser ?: return
+        listener?.remove()
+        listener = db.collection(COLLECTION)
+            .whereEqualTo("userId", user.uid)
+            .addSnapshotListener { snapshot, _ ->
+                bookingsList.clear()
+                snapshot?.documents?.forEach { doc ->
+                    val booking = Booking(
+                        id = doc.getString("id") ?: doc.id,
+                        userId = doc.getString("userId") ?: "",
+                        serviceName = doc.getString("serviceName") ?: "",
+                        servicePrice = doc.getDouble("servicePrice") ?: 0.0,
+                        date = doc.getString("date") ?: "",
+                        time = doc.getString("time") ?: "",
+                        paymentMethod = doc.getString("paymentMethod") ?: ""
+                    )
+                    bookingsList.add(booking)
+                }
+                onUpdate(bookingsList)
+            }
+    }
+
+    fun stopListening() {
+        listener?.remove()
+        listener = null
+    }
+
     fun addBooking(booking: Booking, onComplete: (Boolean) -> Unit) {
         val user = auth.currentUser ?: return onComplete(false)
-
         val docRef = db.collection(COLLECTION).document()
-        val id = docRef.id
+        booking.id = docRef.id
+        booking.userId = user.uid
 
-        val data = mapOf(
-            "id" to id,
-            "userId" to user.uid,
-            "serviceName" to booking.serviceName,
-            "servicePrice" to booking.servicePrice,
-            "date" to booking.date,
-            "time" to booking.time,
-            "paymentMethod" to booking.paymentMethod
-        )
-
+        val data = booking.toMap()
         docRef.set(data)
-            .addOnSuccessListener { onComplete(true) }
-            .addOnFailureListener { onComplete(false) }
-    }
-
-    fun getUserBookings(onResult: (List<Booking>) -> Unit) {
-        val user = auth.currentUser ?: return onResult(emptyList())
-
-        db.collection(COLLECTION)
-            .whereEqualTo("userId", user.uid)
-            .get()
-            .addOnSuccessListener { snapshot ->
-                val list = snapshot.documents.mapNotNull { doc ->
-                    val id = doc.getString("id") ?: ""
-                    val userId = doc.getString("userId") ?: ""
-                    val serviceName = doc.getString("serviceName") ?: ""
-                    val servicePrice = doc.getDouble("servicePrice") ?: 0.0
-                    val date = doc.getString("date") ?: ""
-                    val time = doc.getString("time") ?: ""
-                    val paymentMethod = doc.getString("paymentMethod") ?: ""
-
-                    Booking(
-                        id = id,
-                        userId = userId,
-                        serviceName = serviceName,
-                        servicePrice = servicePrice,
-                        date = date,
-                        time = time,
-                        paymentMethod = paymentMethod
-                    )
-                }
-                onResult(list)
+            .addOnSuccessListener {
+                bookingsList.add(booking)
+                onComplete(true)
             }
-            .addOnFailureListener { onResult(emptyList()) }
-    }
-
-    fun deleteBooking(bookingId: String, onComplete: (Boolean) -> Unit) {
-        if (bookingId.isBlank()) return onComplete(false)
-        db.collection(COLLECTION).document(bookingId)
-            .delete()
-            .addOnSuccessListener { onComplete(true) }
             .addOnFailureListener { onComplete(false) }
     }
 
     fun updateBooking(booking: Booking, onComplete: (Boolean) -> Unit) {
         if (booking.id.isBlank()) return onComplete(false)
-
-        val data = mapOf(
-            "serviceName" to booking.serviceName,
-            "servicePrice" to booking.servicePrice,
-            "date" to booking.date,
-            "time" to booking.time,
-            "paymentMethod" to booking.paymentMethod
-        )
-
-        db.collection(COLLECTION).document(booking.id)
-            .update(data)
-            .addOnSuccessListener { onComplete(true) }
+        val docRef = db.collection(COLLECTION).document(booking.id)
+        val data = booking.toMap()
+        docRef.set(data)
+            .addOnSuccessListener {
+                val index = bookingsList.indexOfFirst { it.id == booking.id }
+                if (index != -1) bookingsList[index] = booking
+                onComplete(true)
+            }
             .addOnFailureListener { onComplete(false) }
+    }
+
+    fun deleteBooking(booking: Booking, onComplete: (Boolean) -> Unit) {
+        if (booking.id.isBlank()) return onComplete(false)
+        db.collection(COLLECTION).document(booking.id)
+            .delete()
+            .addOnSuccessListener {
+                bookingsList.removeAll { it.id == booking.id }
+                onComplete(true)
+            }
+            .addOnFailureListener { onComplete(false) }
+    }
+
+    private fun Booking.toMap(): Map<String, Any> {
+        return mapOf(
+            "id" to id,
+            "userId" to userId,
+            "serviceName" to serviceName,
+            "servicePrice" to servicePrice,
+            "date" to date,
+            "time" to time,
+            "paymentMethod" to paymentMethod
+        )
     }
 }

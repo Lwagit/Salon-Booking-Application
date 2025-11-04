@@ -3,36 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="24dp"
+    android:background="@color/white">
 
+    <!-- Dialog Title -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="How would you rate your experience?"
-        android:textSize="16sp"
+        android:text="Rate Your Experience"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:textColor="@color/black"
         android:gravity="center"
         android:layout_marginBottom="16dp" />
 
+    <!-- RatingBar -->
     <RatingBar
         android:id="@+id/dialogRatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:rating="0"
-        android:stepSize="1"
-        android:numStars="5"
         android:layout_gravity="center"
+        android:numStars="5"
+        android:stepSize="1"
         android:progressTint="@color/beautiful_pink"
         android:layout_marginBottom="16dp" />
 
+    <!-- Optional Feedback Text -->
     <TextView
-        android:id="@+id/tvSelectedRating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select a rating"
+        android:text="Write a short review (optional)"
         android:textSize="14sp"
-        android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="@color/gray"
         android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/dialogReviewText"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:hint="Your review..."
+        android:background="@drawable/rounded_edittext"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/light_gray"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

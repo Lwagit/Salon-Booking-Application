@@ -8,19 +8,16 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.salonbookingapp.R
-import com.example.salonbookingapp.data.SalonService
 
 class BookingConfirmationFragment : Fragment() {
 
-    private var selectedService: SalonService? = null
+    private lateinit var tvBookingDetails: TextView
+    private lateinit var btnBackHome: Button
+    private lateinit var btnViewHistory: Button
 
     companion object {
-        fun newInstance(service: SalonService?): BookingConfirmationFragment {
-            val fragment = BookingConfirmationFragment()
-            val args = Bundle()
-            args.putSerializable("service", service)
-            fragment.arguments = args
-            return fragment
+        fun newInstance(details: String) = BookingConfirmationFragment().apply {
+            arguments = Bundle().apply { putString("details", details) }
         }
     }
 
@@ -30,36 +27,18 @@ class BookingConfirmationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        selectedService = arguments?.getSerializable("service") as? SalonService
-        setupUI(view)
-    }
+        tvBookingDetails = view.findViewById(R.id.tvBookingDetails)
+        btnBackHome = view.findViewById(R.id.btnBackToHome)
+        btnViewHistory = view.findViewById(R.id.btnViewHistory)
 
-    private fun setupUI(view: View) {
-        val tvConfirmation = view.findViewById<TextView>(R.id.tvConfirmation)
-        val tvBookingDetails = view.findViewById<TextView>(R.id.tvBookingDetails)
-        val btnViewHistory = view.findViewById<Button>(R.id.btnViewHistory)
-        val btnBackToHome = view.findViewById<Button>(R.id.btnBackToHome)
+        tvBookingDetails.text = arguments?.getString("details") ?: "Booking details"
 
-        selectedService?.let { service ->
-            tvConfirmation.text = "✅ Booking Confirmed!"
-            tvBookingDetails.text = """
-                Service: ${service.name}
-                Price: R${service.price.toInt()}
-                Duration: ${service.duration} minutes
-                Status: Confirmed
-                Thank you for your booking!
-                📞 Contact: 011 123 4567
-                📍 Location: 123 Beauty Street, Johannesburg
-            """.trimIndent()
-        }
-
+        btnBackHome.setOnClickListener { parentFragmentManager.popBackStack() }
         btnViewHistory.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, BookingHistoryFragment())
+                .replace(R.id.fragmentContainer, BookingHistoryFragment.newInstance())
                 .addToBackStack(null)
                 .commit()
         }
-
-        btnBackToHome.setOnClickListener { parentFragmentManager.popBackStack() }
     }
 }

@@ -10,9 +10,8 @@ import com.example.salonbookingapp.R
 import com.example.salonbookingapp.data.Booking
 
 class BookingAdapter(
-    private val bookings: List<Booking>,
-    private val onEdit: (Booking) -> Unit,
-    private val onDelete: (Booking) -> Unit
+    private val bookings: MutableList<Booking>,
+    private val listener: (Booking, String) -> Unit
 ) : RecyclerView.Adapter<BookingAdapter.BookingViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookingViewHolder {
@@ -26,14 +25,14 @@ class BookingAdapter(
 
     override fun getItemCount(): Int = bookings.size
 
-    inner class BookingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvServiceName: TextView = itemView.findViewById(R.id.tvServiceName)
-        private val tvServicePrice: TextView = itemView.findViewById(R.id.tvServicePrice)
-        private val tvDate: TextView = itemView.findViewById(R.id.tvDate)
-        private val tvTime: TextView = itemView.findViewById(R.id.tvTime)
-        private val tvPaymentMethod: TextView = itemView.findViewById(R.id.tvPaymentMethod)
-        private val btnEdit: ImageButton = itemView.findViewById(R.id.btnEdit)
-        private val btnDelete: ImageButton = itemView.findViewById(R.id.btnDelete)
+    inner class BookingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val tvServiceName: TextView = view.findViewById(R.id.tvServiceName)
+        private val tvServicePrice: TextView = view.findViewById(R.id.tvServicePrice)
+        private val tvDate: TextView = view.findViewById(R.id.tvDate)
+        private val tvTime: TextView = view.findViewById(R.id.tvTime)
+        private val tvPaymentMethod: TextView = view.findViewById(R.id.tvPaymentMethod)
+        private val btnEdit: ImageButton = view.findViewById(R.id.btnEdit)
+        private val btnDelete: ImageButton = view.findViewById(R.id.btnDelete)
 
         fun bind(booking: Booking) {
             tvServiceName.text = booking.serviceName
@@ -42,8 +41,8 @@ class BookingAdapter(
             tvTime.text = booking.time
             tvPaymentMethod.text = booking.paymentMethod
 
-            btnEdit.setOnClickListener { onEdit(booking) }
-            btnDelete.setOnClickListener { onDelete(booking) }
+            btnEdit.setOnClickListener { listener(booking, "edit") }
+            btnDelete.setOnClickListener { listener(booking, "delete") }
         }
     }
 }

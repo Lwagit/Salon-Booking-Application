@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.salonbookingapp.R
 import com.example.salonbookingapp.data.Booking
 import com.example.salonbookingapp.data.FirestoreBookingHelper
+import com.example.salonbookingapp.data.LocalBookings
 import com.example.salonbookingapp.data.SalonService
 import java.util.*
 
@@ -52,13 +54,11 @@ class BookingFragment : Fragment() {
         btnPickDate = view.findViewById(R.id.btnSelectDate)
         btnPickTime = view.findViewById(R.id.btnSelectTime)
         btnViewBookings = view.findViewById(R.id.btnViewBookings)
-
         setupUI()
     }
 
     private fun setupUI() {
-        val serviceNames = serviceList.map { it.name }
-        spinnerService.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, serviceNames)
+        spinnerService.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, serviceList.map { it.name })
         spinnerService.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedService = serviceList[position]
@@ -71,8 +71,7 @@ class BookingFragment : Fragment() {
             }
         }
 
-        val paymentOptions = listOf("Cash", "Card", "EFT")
-        spinnerPayment.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, paymentOptions)
+        spinnerPayment.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listOf("Cash", "Card", "EFT"))
 
         btnPickDate.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -96,12 +95,23 @@ class BookingFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val booking = Booking("", "", selectedService!!.name, selectedService!!.price, selectedDate, selectedTime, spinnerPayment.selectedItem.toString())
+            val booking = Booking(
+                serviceName = selectedService!!.name,
+                servicePrice = selectedService!!.price,
+                date = selectedDate,
+                time = selectedTime,
+                paymentMethod = spinnerPayment.selectedItem.toString()
+            )
+
+            // Add to local bookings instantly
+            LocalBookings.bookings.add(booking)
+
+            // Optional: still add to Firestore
             FirestoreBookingHelper.addBooking(booking) { success ->
                 if (success) {
                     Toast.makeText(requireContext(), "✅ Booking confirmed!", Toast.LENGTH_SHORT).show()
                     parentFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, BookingConfirmationFragment.newInstance(selectedService))
+                        .replace(R.id.fragmentContainer, BookingHistoryFragment.newInstance())
                         .addToBackStack(null)
                         .commit()
                 } else {
@@ -112,7 +122,7 @@ class BookingFragment : Fragment() {
 
         btnViewBookings.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, BookingHistoryFragment())
+                .replace(R.id.fragmentContainer, BookingHistoryFragment.newInstance())
                 .addToBackStack(null)
                 .commit()
         }

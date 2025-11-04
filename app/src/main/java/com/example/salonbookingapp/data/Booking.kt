@@ -1,5 +1,7 @@
 package com.example.salonbookingapp.data
 
+import java.io.Serializable
+
 data class Booking(
     var id: String = "",
     var userId: String = "",
@@ -8,4 +10,4 @@ data class Booking(
     var date: String = "",
     var time: String = "",
     var paymentMethod: String = ""
-)
+) : Serializable
