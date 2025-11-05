@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.salonbookingapp.R
 import com.example.salonbookingapp.data.Booking
 import com.example.salonbookingapp.data.FirestoreBookingHelper
@@ -106,12 +105,21 @@ class BookingFragment : Fragment() {
             // Add to local bookings instantly
             LocalBookings.bookings.add(booking)
 
-            // Optional: still add to Firestore
+            // Save to Firestore and show confirmation screen
             FirestoreBookingHelper.addBooking(booking) { success ->
                 if (success) {
-                    Toast.makeText(requireContext(), "✅ Booking confirmed!", Toast.LENGTH_SHORT).show()
+                    val details = """
+                        ✅ Booking Confirmed!
+
+                        Service: ${booking.serviceName}
+                        Price: R${booking.servicePrice.toInt()}
+                        Date: ${booking.date}
+                        Time: ${booking.time}
+                        Payment Method: ${booking.paymentMethod}
+                    """.trimIndent()
+
                     parentFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, BookingHistoryFragment.newInstance())
+                        .replace(R.id.fragmentContainer, BookingConfirmationFragment.newInstance(details))
                         .addToBackStack(null)
                         .commit()
                 } else {
