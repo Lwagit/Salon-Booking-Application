@@ -49,9 +49,9 @@ class HomeFragment : Fragment() {
         serviceList.apply {
             clear()
             add(SalonService("Men's Haircut", "Professional haircut with styling.", 150.0, 45, R.drawable.ic_haircut))
-            add(SalonService("Ladies Hair Wash & Style", "Wash, blow dry, and style to perfection.", 200.0, 60, R.drawable.ic_haircut))
-            add(SalonService("Beard Trim", "Clean trim and edge styling for your beard.", 100.0, 30, R.drawable.ic_haircut))
-            add(SalonService("Hair Colour", "Full hair colouring using professional-grade products.", 350.0, 90, R.drawable.ic_haircut))
+            add(SalonService("Ladies Hair Wash & Style", "Wash, blow dry, and style to perfection.", 200.0, 60, R.drawable.ic_facial))
+            add(SalonService("Beard Trim", "Clean trim and edge styling for your beard.", 100.0, 30, R.drawable.ic_beard))
+            add(SalonService("Hair Colour", "Full hair colouring using professional-grade products.", 350.0, 90, R.drawable.ic_color))
         }
 
         serviceAdapter = ServiceAdapter(serviceList) { /* optional click action */ }
