@@ -22,3 +22,12 @@ It allows customers to **book, view and delete** appointments conveniently while
 - Firestore database for cloud-based booking storage.
 - Dynamic RecyclerView displaying real-time user bookings.
 - Fully functional
+
+Number of features: 7
+-Leave actual Review,no placeholders.
+-Edit/Delete booking.
+-Contact details API.
+-Map API.
+-Share booking via Email.
+-Booking confirmation message with all details.
+-Time/Date filtering while booking.
